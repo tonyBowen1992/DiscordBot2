@@ -43,7 +43,7 @@ import java.util.Map;
 
 @Controller
 @SpringBootApplication
-public class Main {
+public class Main extends ListenerAdapter{
 
   @Value("${spring.datasource.url}")
   private String dbUrl;
