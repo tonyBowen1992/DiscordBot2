@@ -25,6 +25,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import net.dv8tion.jda.api.requests.RestAction;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -34,6 +38,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,6 +62,56 @@ public class Main extends ListenerAdapter{
     JDABuilder.createLight("Nzk2NTIxNTE3Mzk5NjcwODA0.X_ZIeA.1lZ_1jvoZ03P53P1ANUsuHvwMC4", GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
             .addEventListeners(new Main())
             .build();
+  }
+
+  @Override
+  public void onMessageReceived(MessageReceivedEvent event) {
+    User author = event.getAuthor();
+    Message msg = event.getMessage();
+    String messageTest = msg.getContentRaw().toLowerCase();
+    MessageChannel channel = event.getChannel();
+
+    if (messageTest.contains("dick") && !(author.getName().equals("Mr. roBOT")) && !(messageTest.contains("findgif"))) {
+      EmbedBuilder result = new EmbedBuilder();
+      result.setTitle("Dick is bad. Dix is lvl99");
+      result.setImage("http://tonybowen.me/dix.png");
+      event.getChannel().sendMessage(result.build()).queue();
+    }
+    else if(messageTest.contains("fishing") && !(author.getName().equals("Mr. roBOT")))
+    {
+      JDA JDA = channel.getJDA();
+      OkHttpClient http = JDA.getHttpClient();
+      EmbedBuilder result= new EmbedBuilder();
+
+      okhttp3.Request request = new Request.Builder().url("http://tonybowen.me/fishing.gif").build();
+      Response response = null;
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        InputStream body = response.body().byteStream();
+        result.setImage("attachment://image.gif"); // Use same file name from attachment
+        Response finalResponse = response;
+        Response finalResponse1 = response;
+        channel.sendMessage(result.build())
+                .addFile(body, "image.gif") // Specify file name as "image.png" for embed (this must be the same, its a reference which attachment belongs to which image in the embed)
+                .queue(m -> finalResponse.close(), error -> { // Send message and close response when done
+                  finalResponse1.close();
+                  RestAction.getDefaultFailure().accept(error);
+                });
+      } catch (Throwable ex) {
+        response.close();
+        if (ex instanceof Error) throw (Error) ex;
+        else throw (RuntimeException) ex;
+      }
+    }
   }
 
   @RequestMapping("/")
