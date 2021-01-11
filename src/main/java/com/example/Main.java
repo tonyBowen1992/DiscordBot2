@@ -74,10 +74,77 @@ public class Main extends ListenerAdapter{
     MessageChannel channel = event.getChannel();
 
     if (messageTest.contains("dick") && !(author.getName().equals("Mr. roBOT")) && !(messageTest.contains("findgif"))) {
-      EmbedBuilder result = new EmbedBuilder();
-      result.setTitle("Dick is bad. Dix is lvl99");
-      result.setImage("http://tonybowen.me/dix.png");
-      event.getChannel().sendMessage(result.build()).queue();
+      JDA JDA = channel.getJDA();
+      OkHttpClient http = JDA.getHttpClient();
+      EmbedBuilder result= new EmbedBuilder();
+
+      Integer searchValue = (int) (((Math.random()*(30000 - 1))) + 1);
+
+      okhttp3.Request request = new Request.Builder().url("http://tonybowen.me/dix.png").build();
+      Response response = null;
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        InputStream body = response.body().byteStream();
+        result.setImage("attachment://image.png"); // Use same file name from attachment
+        Response finalResponse = response;
+        Response finalResponse1 = response;
+        channel.sendMessage(result.build())
+                .addFile(body, "image.png") // Specify file name as "image.png" for embed (this must be the same, its a reference which attachment belongs to which image in the embed)
+                .queue(m -> finalResponse.close(), error -> { // Send message and close response when done
+                  finalResponse1.close();
+                  RestAction.getDefaultFailure().accept(error);
+                });
+      } catch (Throwable ex) {
+        response.close();
+        if (ex instanceof Error) throw (Error) ex;
+        else throw (RuntimeException) ex;
+      }
+    }
+    else if(messageTest.contains("findporn"))
+    {
+      JDA JDA = channel.getJDA();
+      OkHttpClient http = JDA.getHttpClient();
+      EmbedBuilder result= new EmbedBuilder();
+
+      Integer searchValue = (int) (((Math.random()*(30000 - 1))) + 1);
+
+      okhttp3.Request request = new Request.Builder().url("https://cdn.porngifs.com/img/" + searchValue).build();
+      Response response = null;
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        InputStream body = response.body().byteStream();
+        result.setImage("attachment://image.gif"); // Use same file name from attachment
+        Response finalResponse = response;
+        Response finalResponse1 = response;
+        channel.sendMessage(result.build())
+                .addFile(body, "image.gif") // Specify file name as "image.png" for embed (this must be the same, its a reference which attachment belongs to which image in the embed)
+                .queue(m -> finalResponse.close(), error -> { // Send message and close response when done
+                  finalResponse1.close();
+                  RestAction.getDefaultFailure().accept(error);
+                });
+      } catch (Throwable ex) {
+        response.close();
+        if (ex instanceof Error) throw (Error) ex;
+        else throw (RuntimeException) ex;
+      }
     }
     else if(messageTest.contains("fishing") && !(author.getName().equals("Mr. roBOT")))
     {
