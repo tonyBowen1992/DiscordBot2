@@ -134,6 +134,8 @@ public class Main extends ListenerAdapter{
         result.setImage("attachment://image.gif"); // Use same file name from attachment
         Response finalResponse = response;
         Response finalResponse1 = response;
+        channel.sendMessage("Dick is no good. Dix is lvl99!") /* => RestAction<Message> */
+                .queue();
         channel.sendMessage(result.build())
                 .addFile(body, "image.gif") // Specify file name as "image.png" for embed (this must be the same, its a reference which attachment belongs to which image in the embed)
                 .queue(m -> finalResponse.close(), error -> { // Send message and close response when done
