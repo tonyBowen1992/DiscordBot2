@@ -61,7 +61,7 @@ public class Main extends ListenerAdapter{
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
-    JDABuilder.createLight("Nzk2NTIxNTE3Mzk5NjcwODA0.X_ZIeA.1lZ_1jvoZ03P53P1ANUsuHvwMC4", GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+    JDABuilder.createLight("ENTER_TOKEN_HERE", GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
             .addEventListeners(new Main())
             .build();
   }
