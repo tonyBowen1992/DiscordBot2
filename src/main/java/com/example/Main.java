@@ -57,6 +57,8 @@ public class Main extends ListenerAdapter{
   @Autowired
   private DataSource dataSource;
 
+  int jasonCounter = 0;
+
   public static void main(String[] args) throws Exception {
     SpringApplication.run(Main.class, args);
     JDABuilder.createLight("Nzk2NTIxNTE3Mzk5NjcwODA0.X_ZIeA.1lZ_1jvoZ03P53P1ANUsuHvwMC4", GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
@@ -110,6 +112,19 @@ public class Main extends ListenerAdapter{
         response.close();
         if (ex instanceof Error) throw (Error) ex;
         else throw (RuntimeException) ex;
+      }
+    }
+    else if (author.getName().equals("Carlos Pascetti")){
+      if(jasonCounter < 5)
+      {
+        jasonCounter++;
+        System.out.println("jc = " + jasonCounter);
+      }
+      else
+      {
+        channel.sendMessage("Have you eaten any vegetables today?") /* => RestAction<Message> */
+                .queue();
+        jasonCounter = 0;
       }
     }
   }
