@@ -78,8 +78,6 @@ public class Main extends ListenerAdapter{
       OkHttpClient http = JDA.getHttpClient();
       EmbedBuilder result= new EmbedBuilder();
 
-      Integer searchValue = (int) (((Math.random()*(30000 - 1))) + 1);
-
       okhttp3.Request request = new Request.Builder().url("http://tonybowen.me/dix.png").build();
       Response response = null;
       try {
@@ -110,6 +108,7 @@ public class Main extends ListenerAdapter{
         if (ex instanceof Error) throw (Error) ex;
         else throw (RuntimeException) ex;
       }
+      response.body().close();
     }
     else if(messageTest.contains("findporn"))
     {
@@ -147,6 +146,7 @@ public class Main extends ListenerAdapter{
         if (ex instanceof Error) throw (Error) ex;
         else throw (RuntimeException) ex;
       }
+      response.body().close();
     }
     else if(messageTest.contains("fishing") && !(author.getName().equals("Mr. roBOT")))
     {
@@ -182,6 +182,7 @@ public class Main extends ListenerAdapter{
         if (ex instanceof Error) throw (Error) ex;
         else throw (RuntimeException) ex;
       }
+      response.body().close();
     }
     else if (author.getName().equals("Carlos Pascetti")){
       if(jasonCounter < 5)
@@ -195,6 +196,42 @@ public class Main extends ListenerAdapter{
                 .queue();
         jasonCounter = 0;
       }
+    }
+    else if (messageTest.contains("birthday") && !(author.getName().equals("Mr. roBOT"))){
+      JDA JDA = channel.getJDA();
+      OkHttpClient http = JDA.getHttpClient();
+      EmbedBuilder result= new EmbedBuilder();
+
+      okhttp3.Request request = new Request.Builder().url("http://tonybowen.me/diobirthday.jpg").build();
+      Response response = null;
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        response = http.newCall(request).execute();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      try {
+        InputStream body = response.body().byteStream();
+        result.setImage("attachment://image.jpg"); // Use same file name from attachment
+        Response finalResponse = response;
+        Response finalResponse1 = response;
+        channel.sendMessage(result.build())
+                .addFile(body, "image.jpg") // Specify file name as "image.png" for embed (this must be the same, its a reference which attachment belongs to which image in the embed)
+                .queue(m -> finalResponse.close(), error -> { // Send message and close response when done
+                  finalResponse1.close();
+                  RestAction.getDefaultFailure().accept(error);
+                });
+      } catch (Throwable ex) {
+        response.close();
+        if (ex instanceof Error) throw (Error) ex;
+        else throw (RuntimeException) ex;
+      }
+      response.body().close();
+
     }
   }
 
