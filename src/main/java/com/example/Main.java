@@ -197,7 +197,7 @@ public class Main extends ListenerAdapter{
         jasonCounter = 0;
       }
     }
-    else if (messageTest.contains("birthday") && !(author.getName().equals("Mr. roBOT"))){
+    else if ((messageTest.contains("bursday") || messageTest.contains("birthday") )&& !(author.getName().equals("Mr. roBOT"))){
       JDA JDA = channel.getJDA();
       OkHttpClient http = JDA.getHttpClient();
       EmbedBuilder result= new EmbedBuilder();
